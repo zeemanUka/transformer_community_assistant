@@ -64,7 +64,23 @@ def fetch_events() -> list[dict[str, Any]]:
         out.append(data)
     return out
 
+def fetch_event_registrations() -> list[dict[str, Any]]:
+    """
+    Fetch all documents from the event_registration collection.
+    Each dict includes the stored fields (email, event_id, registered_at, etc.)
+    plus _firestore_doc_id for the auto-generated document id.
+    """
+    ensure_firebase_initialized()
+    db = firestore.client()
+    col = db.collection(REGISTRATION_COLLECTION)
+    out: list[dict[str, Any]] = []
+    for snap in col.stream():
+        data = snap.to_dict() or {}
+        data["_firestore_doc_id"] = snap.id
+        out.append(data)
+    return out
 
+    
 def _firestore_datetime_to_str(value: Any) -> str:
     """Convert Firestore DatetimeWithNanoseconds or datetime to ISO string."""
     if value is None:
