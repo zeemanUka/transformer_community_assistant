@@ -42,6 +42,44 @@ A Transformer-based LLM is used for question answering, with optional fine-tunin
 
 The assistant retrieves relevant information from the community knowledge base before generating a response.
 
+## Chroma + RAG Pipeline (Local)
+
+The repository now includes small utilities to build a Chroma store and query it locally.
+
+### Build the vector store
+
+```bash
+python scripts/build_chroma.py \
+  --input data/community.json \
+  --persist-dir vector_db \
+  --reset
+
+# Uses rag_config.json by default. Override with:
+python scripts/build_chroma.py \
+  --input data/community.json \
+  --config rag_config.json \
+  --reset
+
+# To use raw text instead of PR-2 event formatting
+python scripts/build_chroma.py \
+  --input data/community.json \
+  --persist-dir vector_db \
+  --format raw \
+  --project-types "" \
+  --reset
+```
+
+### Query the vector store
+
+```bash
+python scripts/query_rag.py \
+  --query "What events are coming up this month?" \
+  --persist-dir vector_db \
+  --k 4
+```
+
+These scripts expect `OPENAI_API_KEY` to be set for embeddings.
+
 ### 5. Gradio Interface
 
 Community members interact with the assistant through Gradio to ask questions and get answers.

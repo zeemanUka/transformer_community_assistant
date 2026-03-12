@@ -1,0 +1,11 @@
+{
+  "persist_dir": "vector_db",
+  "embedding_model": "text-embedding-3-large",
+  "chunk_size": 500,
+  "chunk_overlap": 200,
+  "format": "event",
+  "project_types": ["COMMUNITY", "CONFERENCE"],
+  "text_key": "description",
+  "id_key": "id",
+  "metadata_keys": []
+}
